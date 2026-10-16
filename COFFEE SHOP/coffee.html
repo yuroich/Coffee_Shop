@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brewed & Blessed Coffee Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --espresso:   #3B1F0E;
+      --mahogany:   #6B3A2A;
+      --latte:      #C8A97E;
+      --milk:       #F5EFE6;
+      --foam:       #FDFAF6;
+      --ink:        #2C2C2C;
+      --latte-light: #E8D9C0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--foam);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 5vw;
+      background: rgba(59, 31, 14, 0.96);
+      backdrop-filter: blur(6px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--latte);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--latte-light);
+      text-decoration: none;
+      text-transform: lowercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    /* hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--latte);
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 5vw 5rem;
+      background: linear-gradient(160deg, var(--espresso) 0%, #5a2a14 60%, #7a4020 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle coffee-ring decoration */
+    #hero::before {
+      content: '';
+      position: absolute;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 169, 126, 0.12);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      width: 720px; height: 720px;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 169, 126, 0.07);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--latte);
+      margin-bottom: 1.6rem;
+      text-transform: lowercase;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 9vw, 7.5rem);
+      font-weight: 700;
+      line-height: 1.04;
+      color: var(--foam);
+      max-width: 14ch;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--latte);
+    }
+
+    .hero-sub {
+      margin-top: 1.8rem;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(253, 250, 246, 0.72);
+      max-width: 40ch;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      margin-top: 2.8rem;
+      display: inline-block;
+      padding: 0.85rem 2.4rem;
+      background: var(--latte);
+      color: var(--espresso);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero-cta:hover {
+      background: #dcc49a;
+      color: var(--espresso);
+    }
+
+    /* ── SECTION SHELL ── */
+    section { padding: 6rem 5vw; }
+    section:nth-child(even) { background: var(--milk); }
+
+    .section-label {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      color: var(--espresso);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-rule {
+      display: block;
+      width: 48px; height: 2px;
+      background: var(--latte);
+      margin: 0 auto 3rem;
+    }
+
+    /* ── MENU ── */
+    #menu { background: var(--foam); }
+
+    .menu-intro {
+      text-align: center;
+      color: #5a4030;
+      font-size: 1rem;
+      max-width: 50ch;
+      margin: 0 auto 3.5rem;
+      font-weight: 300;
+    }
+
+    .menu-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .menu-cat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--mahogany);
+      border-bottom: 1px solid var(--latte-light);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .menu-item {
+      background: var(--foam);
+      border: 1px solid var(--latte-light);
+      border-radius: 3px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    section:nth-child(even) .menu-item {
+      background: var(--foam);
+    }
+
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--espresso);
+      margin-bottom: 0.25rem;
+    }
+
+    .item-desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: #6e5040;
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
+    }
+
+    .item-price {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--mahogany);
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--milk); }
+
+    .about-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .about-stat {
+      padding: 1.4rem 1.6rem;
+      border-left: 3px solid var(--latte);
+      background: var(--foam);
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--espresso);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: #7a5a48;
+      margin-top: 0.3rem;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--foam); }
+
+    .contact-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-intro {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #5a4030;
+      margin-bottom: 2.5rem;
+      max-width: 48ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--espresso);
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #fff;
+      border: 1px solid var(--latte-light);
+      border-radius: 2px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--mahogany);
+    }
+
+    textarea { min-height: 130px; resize: vertical; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .submit-btn {
+      align-self: flex-start;
+      padding: 0.85rem 2.4rem;
+      background: var(--espresso);
+      color: var(--latte);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover { background: var(--mahogany); }
+
+    .contact-details {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--latte-light);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--latte);
+      margin-bottom: 0.4rem;
+      text-transform: lowercase;
+    }
+
+    .detail-value {
+      font-size: 0.9rem;
+      color: var(--espresso);
+      font-weight: 400;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--espresso);
+      color: rgba(200, 169, 126, 0.6);
+      text-align: center;
+      padding: 2rem 5vw;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    footer strong {
+      color: var(--latte);
+      font-weight: 400;
+    }
+
+    /* ── SUCCESS MESSAGE ── */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      background: #f0ebe2;
+      border: 1px solid var(--latte-light);
+      border-radius: 3px;
+      color: var(--espresso);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        background: var(--espresso);
+        padding: 1rem 5vw 1.5rem;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links li { padding: 0.6rem 0; border-bottom: 1px solid rgba(200,169,126,0.12); }
+      .nav-links li:last-child { border-bottom: none; }
+      .nav-toggle { display: flex; }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      .contact-details { grid-template-columns: 1fr; gap: 1rem; }
+
+      .submit-btn { align-self: stretch; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    /* keyboard focus */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 2px solid var(--latte);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Brewed &amp; Blessed</a>
+  <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#menu">menu</a></li>
+    <li><a href="#about">our story</a></li>
+    <li><a href="#contact">order &amp; contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow">est. 2019 &nbsp;·&nbsp; handcrafted with love</p>
+  <h1 class="hero-title">Every cup<br>tells a <em>story.</em></h1>
+  <p class="hero-sub">Small-batch coffee, brewed fresh for you — from the first sip to the last warm drop.</p>
+  <a href="#menu" class="hero-cta">See our menu</a>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <h2 class="section-label">What we brew</h2>
+  <span class="section-rule" aria-hidden="true"></span>
+  <p class="menu-intro">Everything on our menu is made to order. We use freshly ground beans sourced from local suppliers.</p>
+
+  <div class="menu-categories">
+
+    <!-- Hot Drinks -->
+    <div class="menu-category">
+      <h3 class="menu-cat-title">Hot Coffee</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-name">Espresso</div>
+          <div class="item-desc">Pure and bold — two shots of our house blend, nothing more.</div>
+          <div class="item-price">₱65</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Americano</div>
+          <div class="item-desc">Espresso pulled long with hot water. Clean and smooth.</div>
+          <div class="item-price">₱80</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Cappuccino</div>
+          <div class="item-desc">Equal thirds of espresso, steamed milk, and thick foam.</div>
+          <div class="item-price">₱95</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Café Latte</div>
+          <div class="item-desc">Espresso softened with steamed milk and a light foam top.</div>
+          <div class="item-price">₱100</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Flat White</div>
+          <div class="item-desc">Velvety microfoam poured over a double ristretto shot.</div>
+          <div class="item-price">₱105</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Mocha</div>
+          <div class="item-desc">Espresso with dark chocolate and steamed milk. Rich &amp; warming.</div>
+          <div class="item-price">₱110</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cold Drinks -->
+    <div class="menu-category">
+      <h3 class="menu-cat-title">Cold Coffee</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-name">Iced Latte</div>
+          <div class="item-desc">Espresso shots over ice with cold fresh milk.</div>
+          <div class="item-price">₱110</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Cold Brew</div>
+          <div class="item-desc">Steeped 16 hours for a mellow, chocolatey finish.</div>
+          <div class="item-price">₱120</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Iced Mocha</div>
+          <div class="item-desc">Espresso, chocolate syrup, milk, and ice — blended smooth.</div>
+          <div class="item-price">₱125</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Spanish Latte</div>
+          <div class="item-desc">Espresso with sweet condensed milk on ice. Crowd favorite.</div>
+          <div class="item-price">₱130</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Non-Coffee -->
+    <div class="menu-category">
+      <h3 class="menu-cat-title">Non-Coffee &amp; Pastries</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-name">Matcha Latte</div>
+          <div class="item-desc">Ceremonial-grade matcha with steamed or iced oat milk.</div>
+          <div class="item-price">₱120</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Hot Chocolate</div>
+          <div class="item-desc">Real cocoa, warm milk, a pinch of sea salt.</div>
+          <div class="item-price">₱95</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Butter Croissant</div>
+          <div class="item-desc">Freshly baked each morning. Pairs with anything.</div>
+          <div class="item-price">₱75</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Banana Loaf</div>
+          <div class="item-desc">Moist, dense, and just sweet enough. Homemade daily.</div>
+          <div class="item-price">₱65</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-label">Our story</h2>
+  <span class="section-rule" aria-hidden="true"></span>
+  <div class="about-inner">
+    <div class="about-text">
+      <p>Brewed &amp; Blessed started in 2019 as a tiny corner stall with a secondhand espresso machine and a stubborn belief that good coffee shouldn't be expensive or complicated.</p>
+      <p>Today we serve our neighborhood from the same corner — just with better equipment at the same honest prices. Every drink is made by hand, every bean is sourced locally, and every cup goes out with a little extra care.</p>
+      <p>We're not a chain. We're not trying to be. We just love what we do, and we hope it shows in every sip.</p>
+    </div>
+    <div class="about-aside">
+      <div class="about-stat">
+        <div class="stat-number">7+</div>
+        <div class="stat-label">years serving the neighborhood</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">locally sourced beans</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-number">Made</div>
+        <div class="stat-label">to order, every single time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-label">Order &amp; contact us</h2>
+  <span class="section-rule" aria-hidden="true"></span>
+  <div class="contact-inner">
+    <p class="contact-intro">Place a pickup order, ask about bulk orders for events, or just say hello. We'll get back to you as soon as we can.</p>
+
+    <form id="contactForm" novalidate>
+      <div class="form-row">
+        <div>
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" placeholder="Juan dela Cruz" required />
+        </div>
+        <div>
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" name="phone" placeholder="09xx xxx xxxx" />
+        </div>
+      </div>
+      <div>
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      </div>
+      <div>
+        <label for="order">Your order or message</label>
+        <textarea id="order" name="order" placeholder="e.g. 2x Iced Latte, 1x Banana Loaf — pickup at 3pm" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send order</button>
+    </form>
+
+    <div class="form-success" id="formSuccess">
+      Thanks! We've received your order and will confirm shortly.
+    </div>
+
+    <div class="contact-details">
+      <div>
+        <div class="detail-label">find us</div>
+        <div class="detail-value">123 Brew Street<br>Quezon City, Metro Manila</div>
+      </div>
+      <div>
+        <div class="detail-label">hours</div>
+        <div class="detail-value">Mon – Sat<br>7:00 am – 7:00 pm</div>
+      </div>
+      <div>
+        <div class="detail-label">reach us</div>
+        <div class="detail-value">0917 123 4567<br>@brewedandblessed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 <strong>Brewed &amp; Blessed Coffee Shop</strong>. Made with care in Quezon City.</p>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.getElementById('navLinks');
+
+  toggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+
+  // Close nav on link click (mobile)
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Form submission (no backend — shows success message)
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
