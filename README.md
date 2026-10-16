@@ -24,7 +24,7 @@ Just open `index.html` in any web browser. That's it.
 
 ## Live site
 
-Hosted via GitHub Pages: [https://yourusername.github.io/coffee-shop](https://yourusername.github.io/coffee-shop)
+Hosted via GitHub Pages: [https://yourusername.github.io/coffee-shop](https://github.com/yuroich/Coffee_Shop)
 
 ## License
 
